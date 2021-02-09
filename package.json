@@ -1,0 +1,29 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "API for movies-explorer project",
+  "main": "app.mjs",
+  "scripts": {
+    "start": "node app.mjs",
+    "dev": "nodemon app.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thedoft/movies-explorer-api.git"
+  },
+  "author": "thedoft",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thedoft/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/thedoft/movies-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
