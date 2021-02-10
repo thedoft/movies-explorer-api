@@ -60,9 +60,7 @@ app.use((err, req, res, next) => {
     return res.status(statusCode).send({ message });
   }
 
-  return next();
+  return res.status(500).send({ message: 'На сервере произошла ошибка' });
 });
-
-app.use((req, res) => res.status(500).send({ message: 'На сервере произошла ошибка' }));
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`)); // eslint-disable-line
