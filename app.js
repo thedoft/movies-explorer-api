@@ -8,7 +8,7 @@ import { errors } from 'celebrate';
 
 import router from './routes/index.js';
 
-import corsConfig from './middlewares/cors.js';
+import corsConfig from './configs/cors.js';
 import auth from './middlewares/auth.js';
 import { createUserValidator, loginValidator } from './middlewares/validators/usersValidators.js';
 import { createUser, login, signout } from './controllers/users.js';

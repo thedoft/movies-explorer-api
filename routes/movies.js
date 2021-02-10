@@ -6,6 +6,6 @@ const moviesRouter = express.Router();
 
 moviesRouter.get('/', getMovies);
 moviesRouter.post('/', createMovieValidator, createMovie);
-moviesRouter.delete('/movieId', deleteMovieValidator, deleteMovie);
+moviesRouter.delete('/:movieId', deleteMovieValidator, deleteMovie);
 
 export default moviesRouter;

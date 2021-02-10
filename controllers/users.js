@@ -1,12 +1,20 @@
-const createUser = () => {};
+import User from '../models/user.js';
 
-const login = () => {};
+const createUser = (req, res, next) => {};
 
-const signout = () => {};
+const login = (req, res, next) => {};
 
-const getUser = () => {};
+const signout = (req, res) => (
+  res
+    .clearCookie('jwt', { httpOnly: true, sameSite: true })
+    .send({ message: 'Signed Out' })
+);
 
-const updateUser = () => {};
+const getUser = (req, res, next) => {
+  User.findById(req.user._id);
+};
+
+const updateUser = (req, res, next) => {};
 
 export {
   createUser,
