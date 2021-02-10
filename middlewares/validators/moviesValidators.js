@@ -4,37 +4,33 @@ import { urlRegEx } from '../../utils/constants.js';
 
 Joi.objectId = joiObjectId(Joi);
 
-const {
-  object, string, number, objectId,
-} = Joi;
-
 const createMovieValidator = celebrate({
-  body: object().keys({
-    country: string().required(),
-    director: string().required(),
-    duration: number().required(),
-    year: string().required(),
-    description: string().required(),
+  body: Joi.object().keys({
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
     image:
-      string()
+      Joi.string()
         .required()
         .pattern(urlRegEx),
     trailer:
-      string()
+      Joi.string()
         .required()
         .pattern(urlRegEx),
     thumbnail:
-      string()
+      Joi.string()
         .required()
         .pattern(urlRegEx),
-    nameRU: string().required(),
-    nameEN: string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
 const deleteMovieValidator = celebrate({
-  params: object().keys({
-    movieId: objectId().required(),
+  params: Joi.object().keys({
+    movieId: Joi.objectId().required(),
   }),
 });
 
