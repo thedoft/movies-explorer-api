@@ -6,11 +6,13 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { errors } from 'celebrate';
 
+import router from './routes/index.js';
+
 import corsConfig from './middlewares/cors.js';
 import auth from './middlewares/auth.js';
+import { createUserValidator, loginValidator } from './middlewares/validators/usersValidators.js';
+import { createUser, login, signout } from './controllers/users.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
-// import { createUserValidation, loginValidation } from './middlewares/celebrate';
-// import { createUser, login, signout } from './controllers/users';
 
 import NotFoundError from './errors/NotFoundError.js';
 
@@ -34,20 +36,15 @@ app.use(requestLogger);
 app.use('*', cors(corsConfig));
 
 // public routes
-// ...
-app.get('/', (req, res) => res.send({ message: 'Hello' }));
-app.use(auth);
+app.use('/signup', createUserValidator, createUser);
+app.use('/signin', loginValidator, login);
 
 // private routes
-// app.use(require('./routes/index'));
-// app.get('/signout', signout);
+app.use(auth, router);
+app.get('/signout', signout);
 
 app.get('*', () => {
-  try {
-    throw new NotFoundError('Запрашиваемый ресурс не найден');
-  } catch (err) {
-    throw new NotFoundError('Запрашиваемый ресурс не найден');
-  }
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 app.use(errorLogger);
