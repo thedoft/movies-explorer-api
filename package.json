@@ -2,15 +2,16 @@
   "name": "movies-explorer-api",
   "version": "1.0.0",
   "description": "API for movies-explorer project",
-  "main": "app.mjs",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.mjs",
-    "dev": "nodemon app.mjs"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thedoft/movies-explorer-api.git"
   },
+  "type": "module",
   "author": "thedoft",
   "license": "ISC",
   "bugs": {
@@ -24,6 +25,18 @@
     "nodemon": "^2.0.6"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "celebrate": "^13.0.4",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-winston": "^4.0.5",
+    "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.9",
+    "validator": "^13.5.2",
+    "winston": "^3.3.3"
   }
 }
