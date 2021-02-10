@@ -1,27 +1,26 @@
 import { celebrate, Joi } from 'celebrate';
-import objectId from 'joi-objectid';
 
-Joi.objectId = objectId(Joi);
+const { object, string } = Joi;
 
 const createUserValidator = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
+  body: object().keys({
+    email: string().email().required(),
+    password: string().required(),
+    name: string().min(2).max(30),
   }),
 });
 
 const loginValidator = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+  body: object().keys({
+    email: string().email().required(),
+    password: string().required(),
   }),
 });
 
 const updateUserValidator = celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    name: Joi.string().min(2).max(30),
+  body: object().keys({
+    email: string().email().required(),
+    name: string().min(2).max(30),
   }),
 });
 

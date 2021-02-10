@@ -1,5 +1,6 @@
 import { celebrate, Joi } from 'celebrate';
 import joiObjectId from 'joi-objectid';
+import { urlRegEx } from '../../utils/constants.js';
 
 Joi.objectId = joiObjectId(Joi);
 
@@ -17,15 +18,15 @@ const createMovieValidator = celebrate({
     image:
       string()
         .required()
-        .pattern(/^(https?:\/\/)(www\.)?([\da-z-.]+)\.([a-z.]{2,6})[\da-zA-Z-._~:?#[\]@!$&'()*+,;=/]*\/?#?$/),
+        .pattern(urlRegEx),
     trailer:
       string()
         .required()
-        .pattern(/^(https?:\/\/)(www\.)?([\da-z-.]+)\.([a-z.]{2,6})[\da-zA-Z-._~:?#[\]@!$&'()*+,;=/]*\/?#?$/),
+        .pattern(urlRegEx),
     thumbnail:
       string()
         .required()
-        .pattern(/^(https?:\/\/)(www\.)?([\da-z-.]+)\.([a-z.]{2,6})[\da-zA-Z-._~:?#[\]@!$&'()*+,;=/]*\/?#?$/),
+        .pattern(urlRegEx),
     nameRU: string().required(),
     nameEN: string().required(),
   }),

@@ -1,8 +1,8 @@
-const getMovies = () => {};
+const getMovies = (req, res, next) => {};
 
-const createMovie = () => {};
+const createMovie = (req, res, next) => {};
 
-const deleteMovie = () => {};
+const deleteMovie = (req, res, next) => {};
 
 export {
   getMovies,
