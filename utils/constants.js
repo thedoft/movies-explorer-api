@@ -6,3 +6,4 @@ export const requiredValidationMessage = (name) => `Поле "${name}" обяз�
 export const documentNotFoundErrorMessage = 'Документ не найден';
 export const userExistErrorMessage = 'Пользователь с таким email уже существует';
 export const forbiddenErrorMessage = 'Нет прав для совершения данной операции';
+export const BadRequestErrorMessage = 'Переданы некорректные данные';
