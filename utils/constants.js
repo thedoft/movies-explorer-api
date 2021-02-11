@@ -3,4 +3,6 @@ export const urlValidatorMessage = 'Строка должна содержать
 export const incorrectAuthDataMessage = 'Неправильные почта или пароль';
 export const requiredValidationMessage = (name) => `Поле "${name}" обязательно`;
 
-export const documentNotFoundErrorMessage = 'Document not found';
+export const documentNotFoundErrorMessage = 'Документ не найден';
+export const userExistErrorMessage = 'Пользователь с таким email уже существует';
+export const forbiddenErrorMessage = 'Нет прав для совершения данной операции';

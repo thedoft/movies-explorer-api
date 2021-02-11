@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.js';
 import NotFoundError from '../errors/NotFoundError.js';
-import { documentNotFoundErrorMessage } from '../utils/constants.js';
+import ConflictError from '../errors/ConflictError.js';
+import { documentNotFoundErrorMessage, userExistErrorMessage } from '../utils/constants.js';
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -14,10 +15,10 @@ const createUser = async (req, res, next) => {
     const existedUser = await User.findOne({ email });
 
     if (existedUser) {
-      throw new Error('');
+      throw new ConflictError(userExistErrorMessage);
     }
     const hash = await bcrypt.hash(password, 10);
-    const user = await User.create({ email, name, password: hash });
+    await User.create({ email, name, password: hash });
 
     return res.status(201).send({ email, name });
   } catch (err) {
