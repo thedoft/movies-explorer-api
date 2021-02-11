@@ -1,20 +1,86 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
 import User from '../models/user.js';
+import NotFoundError from '../errors/NotFoundError.js';
+import { documentNotFoundErrorMessage } from '../utils/constants.js';
 
-const createUser = (req, res, next) => {};
+const { NODE_ENV, JWT_SECRET } = process.env;
 
-const login = (req, res, next) => {};
+const createUser = async (req, res, next) => {
+  const { email, password, name } = req.body;
 
-const signout = (req, res) => (
-  res
-    .clearCookie('jwt', { httpOnly: true, sameSite: true })
-    .send({ message: 'Signed Out' })
-);
+  try {
+    const existedUser = await User.findOne({ email });
 
-const getUser = (req, res, next) => {
-  User.findById(req.user._id);
+    if (existedUser) {
+      throw new Error('');
+    }
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({ email, name, password: hash });
+
+    return res.status(201).send({ email, name });
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const updateUser = (req, res, next) => {};
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findUserByCredentials(email, password);
+    const token = jwt.sign(
+      { _id: user._id },
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+      { expiresIn: '7d' },
+    );
+
+    return res
+      .cookie('jwt', token, {
+        httpOnly: true,
+        sameSite: true,
+        maxAge: (3600 * 24 * 7),
+      })
+      .send(user);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const signout = (req, res) => (
+  res.clearCookie('jwt', { httpOnly: true, sameSite: true }).send({ message: 'Signed Out' })
+);
+
+const getUser = async (req, res, next) => {
+  try {
+    const user = await User
+      .findById(req.user._id)
+      .orFail(new NotFoundError(documentNotFoundErrorMessage));
+
+    return res.send(user);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const updateUser = async (req, res, next) => {
+  const { email, name } = req.body;
+
+  try {
+    const user = await User
+      .findByIdAndUpdate(
+        req.user._id,
+        { email, name },
+        { new: true, runValidators: true },
+      )
+      .orFail(new NotFoundError(documentNotFoundErrorMessage));
+
+    return res.send(user);
+  } catch (err) {
+    return next(err);
+  }
+};
 
 export {
   createUser,

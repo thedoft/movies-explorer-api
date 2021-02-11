@@ -1,31 +1,31 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
-import { urlValidatorMessage } from '../utils/constants.js';
+import { urlValidatorMessage, requiredValidationMessage } from '../utils/constants.js';
 
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
-    required: [true, 'Поле "country" обязательно'],
+    required: [true, requiredValidationMessage('country')],
   },
   director: {
     type: String,
-    required: [true, 'Поле "director" обязательно'],
+    required: [true, requiredValidationMessage('director')],
   },
   duration: {
     type: Number,
-    required: [true, 'Поле "duration" обязательно'],
+    required: [true, requiredValidationMessage('duration')],
   },
   year: {
     type: String,
-    required: [true, 'Поле "year" обязательно'],
+    required: [true, requiredValidationMessage('year')],
   },
   description: {
     type: String,
-    required: [true, 'Поле "description" обязательно'],
+    required: [true, requiredValidationMessage('description')],
   },
   image: {
     type: String,
-    required: [true, 'Поле "image" обязательно'],
+    required: [true, requiredValidationMessage('image')],
     validate: {
       validator(v) {
         return validator.isURL(v);
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
   },
   trailer: {
     type: String,
-    required: [true, 'Поле "trailer" обязательно'],
+    required: [true, requiredValidationMessage('trailer')],
     validate: {
       validator(v) {
         return validator.isURL(v);
@@ -45,7 +45,7 @@ const movieSchema = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
-    required: [true, 'Поле "thumbnail" обязательно'],
+    required: [true, requiredValidationMessage('thumbnail')],
     validate: {
       validator(v) {
         return validator.isURL(v);
@@ -56,16 +56,16 @@ const movieSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: [true, 'Поле "owner" обязательно'],
+    required: [true, requiredValidationMessage('owner')],
     select: false,
   },
   nameRU: {
     type: String,
-    required: [true, 'Поле "nameRU" обязательно'],
+    required: [true, requiredValidationMessage('nameRU')],
   },
   nameEN: {
     type: String,
-    required: [true, 'Поле "nameEN" обязательно'],
+    required: [true, requiredValidationMessage('nameEN')],
   },
 });
 

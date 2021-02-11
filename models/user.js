@@ -3,12 +3,13 @@ import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
 import UnauthorizedError from '../errors/UnauthorizedError.js';
-import { incorrectAuthDataMessage } from '../utils/constants.js';
+import { incorrectAuthDataMessage, requiredValidationMessage, documentNotFoundErrorMessage } from '../utils/constants.js';
+import NotFoundError from '../errors/NotFoundError.js';
 
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: [true, 'Поле "email" обязательно'],
+    required: [true, requiredValidationMessage('email')],
     unique: [true, 'Email уникален'],
     validate: {
       validator(v) {
@@ -19,31 +20,45 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Поле "password" обязательно'],
+    required: [true, requiredValidationMessage('password')],
     select: false,
   },
   name: {
     type: String,
-    required: [true, 'Поле "name" обязательно'],
+    required: [true, requiredValidationMessage('name')],
     minlength: [2, 'Минимальная длина имени - 2 символа'],
     maxlength: [30, 'Максимальная длина имени - 30 символов'],
   },
 });
 
-userSchema.statics.findUserByCredentials = function findUserByCredentials(email, password) {
-  return this.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        throw new UnauthorizedError(incorrectAuthDataMessage);
-      }
-      return bcrypt.compare(password, user.password)
-        .then((isMatched) => {
-          if (!isMatched) {
-            throw new UnauthorizedError(incorrectAuthDataMessage);
-          }
-          return user;
-        });
-    });
+// userSchema.statics.findUserByCredentials = function f(email, password) {
+//   return this.findOne({ email }).select('+password')
+//     .then((user) => {
+//       if (!user) {
+//         throw new UnauthorizedError(incorrectAuthDataMessage);
+//       }
+//       return bcrypt.compare(password, user.password)
+//         .then((isMatched) => {
+//           if (!isMatched) {
+//             throw new UnauthorizedError(incorrectAuthDataMessage);
+//           }
+//           return user;
+//         });
+//     });
+// };
+
+userSchema.statics.findUserByCredentials = async function f(email, password) {
+  const user = await this.findOne({ email }).select('+password').orFail(new NotFoundError(documentNotFoundErrorMessage));
+
+  if (!user) {
+    throw new UnauthorizedError(incorrectAuthDataMessage);
+  }
+  const isMatched = await bcrypt.compare(password, user.password);
+
+  if (!isMatched) {
+    throw new UnauthorizedError(incorrectAuthDataMessage);
+  }
+  return user;
 };
 
 const User = mongoose.model('user', userSchema);
