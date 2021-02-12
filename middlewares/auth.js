@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import UnauthorizedError from '../errors/UnauthorizedError.js';
+import devEnvConfig from '../configs/devEnvConfig.js';
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { DEV_JWT_SECRET } = devEnvConfig;
+const { JWT_SECRET = DEV_JWT_SECRET } = process.env;
 
 const auth = (req, res, next) => {
   if (!req.cookies.jwt) {
@@ -13,7 +15,7 @@ const auth = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     throw new UnauthorizedError('Передан некорректный токен');
   }
