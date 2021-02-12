@@ -3,15 +3,17 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import cors from 'cors';
 import { errors } from 'celebrate';
 
 import router from './routes/index.js';
 import corsConfig from './configs/corsConfig.js';
 import devEnvConfig from './configs/devEnvConfig.js';
+import rateLimitConfig from './configs/rateLimitConfig.js';
+import { createUser, login, signout } from './controllers/users.js';
 import auth from './middlewares/auth.js';
 import { createUserValidator, loginValidator } from './middlewares/validators/usersValidators.js';
-import { createUser, login, signout } from './controllers/users.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 import centralErrorsHandler from './middlewares/centralErrorsHandler.js';
 import NotFoundError from './errors/NotFoundError.js';
@@ -33,6 +35,8 @@ mongoose.connect(DATABASE_URL, {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(helmet());
+app.use(rateLimitConfig);
 app.use(requestLogger);
 app.use('*', cors(corsConfig));
 

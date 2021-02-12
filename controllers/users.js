@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import escapeHtml from 'escape-html';
 
 import User from '../models/user.js';
 import NotFoundError from '../errors/NotFoundError.js';
@@ -32,7 +33,7 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findUserByCredentials(email, password);
+    const user = await User.findUserByCredentials(email, escapeHtml(password));
     const token = jwt.sign(
       { _id: user._id }, JWT_SECRET, { expiresIn: '7d' },
     );
