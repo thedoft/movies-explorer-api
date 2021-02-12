@@ -33,7 +33,10 @@ const deleteMovie = async (req, res, next) => {
   const { _id } = req.params.movieId;
 
   try {
-    const movie = await Movie.findById(_id).orFail(new NotFoundError(documentNotFoundErrorMessage));
+    const movie = await Movie
+      .findById(_id)
+      .select('+owner')
+      .orFail(new NotFoundError(documentNotFoundErrorMessage));
 
     if (JSON.stringify(movie.owner) !== JSON.stringify(req.user._id)) {
       throw new ForbiddenError(forbiddenErrorMessage);
