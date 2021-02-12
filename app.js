@@ -7,7 +7,8 @@ import cors from 'cors';
 import { errors } from 'celebrate';
 
 import router from './routes/index.js';
-import corsConfig from './configs/cors.js';
+import corsConfig from './configs/corsConfig.js';
+import devEnvConfig from './configs/devEnvConfig.js';
 import auth from './middlewares/auth.js';
 import { createUserValidator, loginValidator } from './middlewares/validators/usersValidators.js';
 import { createUser, login, signout } from './controllers/users.js';
@@ -16,10 +17,12 @@ import centralErrorsHandler from './middlewares/centralErrorsHandler.js';
 import NotFoundError from './errors/NotFoundError.js';
 
 dotenv.config();
-const { PORT = 3000 } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/movie-explorer-db', {
+const { DEV_DATABASE_URL } = devEnvConfig;
+const { PORT = 3000, DATABASE_URL = DEV_DATABASE_URL } = process.env;
+
+mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,

@@ -31,22 +31,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.statics.findUserByCredentials = function f(email, password) {
-//   return this.findOne({ email }).select('+password')
-//     .then((user) => {
-//       if (!user) {
-//         throw new UnauthorizedError(incorrectAuthDataMessage);
-//       }
-//       return bcrypt.compare(password, user.password)
-//         .then((isMatched) => {
-//           if (!isMatched) {
-//             throw new UnauthorizedError(incorrectAuthDataMessage);
-//           }
-//           return user;
-//         });
-//     });
-// };
-
 userSchema.statics.findUserByCredentials = async function f(email, password) {
   const user = await this.findOne({ email }).select('+password').orFail(new NotFoundError(documentNotFoundErrorMessage));
 

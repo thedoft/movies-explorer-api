@@ -5,8 +5,10 @@ import User from '../models/user.js';
 import NotFoundError from '../errors/NotFoundError.js';
 import ConflictError from '../errors/ConflictError.js';
 import { documentNotFoundErrorMessage, userExistErrorMessage } from '../utils/constants.js';
+import devEnvConfig from '../configs/devEnvConfig.js';
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { DEV_JWT_SECRET } = devEnvConfig;
+const { JWT_SECRET = DEV_JWT_SECRET } = process.env;
 
 const createUser = async (req, res, next) => {
   const { email, password, name } = req.body;
@@ -32,9 +34,7 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findUserByCredentials(email, password);
     const token = jwt.sign(
-      { _id: user._id },
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-      { expiresIn: '7d' },
+      { _id: user._id }, JWT_SECRET, { expiresIn: '7d' },
     );
 
     return res
