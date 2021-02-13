@@ -9,16 +9,14 @@ import { errors } from 'celebrate';
 
 import router from './routes/index.js';
 import corsConfig from './configs/corsConfig.js';
-import devEnvConfig from './configs/devEnvConfig.js';
+import { DEV_DATABASE_URL } from './configs/devEnvConfig.js';
 import rateLimitConfig from './configs/rateLimitConfig.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 import centralErrorsHandler from './middlewares/centralErrorsHandler.js';
 
 dotenv.config();
-const app = express();
-
-const { DEV_DATABASE_URL } = devEnvConfig;
 const { PORT = 3000, DATABASE_URL = DEV_DATABASE_URL } = process.env;
+const app = express();
 
 mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
