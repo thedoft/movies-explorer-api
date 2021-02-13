@@ -15,12 +15,24 @@ const getMovies = async (req, res, next) => {
 
 const createMovie = async (req, res, next) => {
   const {
-    country, director, duration, year, description, image, trailer, thumbnail, nameRU, nameEN,
+    country, director, duration, year, description,
+    image, trailer, thumbnail, nameRU, nameEN, movieId,
   } = req.body;
 
   try {
     const movie = await Movie.create({
-      country, director, duration, year, description, image, trailer, thumbnail, nameRU, nameEN,
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailer,
+      thumbnail,
+      nameRU,
+      nameEN,
+      movieId,
+      owner: req.user._id,
     });
 
     return res.send(movie);
@@ -30,18 +42,18 @@ const createMovie = async (req, res, next) => {
 };
 
 const deleteMovie = async (req, res, next) => {
-  const { _id } = req.params.movieId;
+  const { movieId } = req.params;
 
   try {
     const movie = await Movie
-      .findById(_id)
+      .findById(movieId)
       .select('+owner')
       .orFail(new NotFoundError(documentNotFoundErrorMessage));
 
-    if (JSON.stringify(movie.owner) !== JSON.stringify(req.user._id)) {
+    if (movie.owner.toString() !== req.user._id.toString()) {
       throw new ForbiddenError(forbiddenErrorMessage);
     }
-    await Movie.deleteOne({ _id });
+    await Movie.deleteOne({ _id: movieId });
 
     return res.send(movie);
   } catch (err) {

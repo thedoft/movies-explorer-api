@@ -1,7 +1,6 @@
 import { celebrate, Joi } from 'celebrate';
 import joiObjectId from 'joi-objectid';
-import { urlRegEx, BadRequestErrorMessage } from '../../utils/constants.js';
-import BadRequestError from '../../errors/BadRequestError.js';
+import { urlRegEx } from '../../utils/constants.js';
 
 Joi.objectId = joiObjectId(Joi);
 
@@ -26,13 +25,14 @@ const createMovieValidator = celebrate({
         .pattern(urlRegEx),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
-  }).error(new BadRequestError(BadRequestErrorMessage)),
+    movieId: Joi.string().required(),
+  }),
 });
 
 const deleteMovieValidator = celebrate({
   params: Joi.object().keys({
     movieId: Joi.objectId().required(),
-  }).error(new BadRequestError(BadRequestErrorMessage)),
+  }),
 });
 
 export {

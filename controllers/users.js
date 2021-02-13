@@ -6,9 +6,8 @@ import User from '../models/user.js';
 import NotFoundError from '../errors/NotFoundError.js';
 import ConflictError from '../errors/ConflictError.js';
 import { documentNotFoundErrorMessage, userExistErrorMessage } from '../utils/constants.js';
-import devEnvConfig from '../configs/devEnvConfig.js';
+import { DEV_JWT_SECRET } from '../configs/devEnvConfig.js';
 
-const { DEV_JWT_SECRET } = devEnvConfig;
 const { JWT_SECRET = DEV_JWT_SECRET } = process.env;
 
 const createUser = async (req, res, next) => {
@@ -42,9 +41,9 @@ const login = async (req, res, next) => {
       .cookie('jwt', token, {
         httpOnly: true,
         sameSite: true,
-        maxAge: (3600 * 24 * 7),
+        maxAge: (360000 * 24 * 7),
       })
-      .send(user);
+      .send({ email: user.email, name: user.name });
   } catch (err) {
     return next(err);
   }

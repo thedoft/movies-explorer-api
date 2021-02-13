@@ -56,8 +56,12 @@ const movieSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: [true, requiredValidationMessage('owner')],
     select: false,
+    required: true,
+  },
+  movieId: {
+    type: String,
+    required: [true, requiredValidationMessage('movieId')],
   },
   nameRU: {
     type: String,

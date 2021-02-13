@@ -15,8 +15,8 @@ router.use('/signin', loginValidator, login);
 // private routes
 router.use(auth);
 
-router.use(usersRouter);
-router.use(moviesRouter);
+router.use('/users', usersRouter);
+router.use('/movies', moviesRouter);
 
 router.get('/signout', signout);
 router.get('*', () => {
