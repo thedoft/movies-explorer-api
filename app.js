@@ -11,12 +11,8 @@ import router from './routes/index.js';
 import corsConfig from './configs/corsConfig.js';
 import devEnvConfig from './configs/devEnvConfig.js';
 import rateLimitConfig from './configs/rateLimitConfig.js';
-import { createUser, login, signout } from './controllers/users.js';
-import auth from './middlewares/auth.js';
-import { createUserValidator, loginValidator } from './middlewares/validators/usersValidators.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 import centralErrorsHandler from './middlewares/centralErrorsHandler.js';
-import NotFoundError from './errors/NotFoundError.js';
 
 dotenv.config();
 const app = express();
@@ -40,16 +36,8 @@ app.use(rateLimitConfig);
 app.use(requestLogger);
 app.use('*', cors(corsConfig));
 
-// public routes
-app.use('/signup', createUserValidator, createUser);
-app.use('/signin', loginValidator, login);
-
-// private routes
-app.use(auth, router);
-app.get('/signout', signout);
-app.get('*', () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
-});
+// routes
+app.use(router);
 
 // errors handlers
 app.use(errorLogger);
