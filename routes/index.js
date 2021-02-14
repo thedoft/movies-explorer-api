@@ -19,7 +19,7 @@ router.use('/users', usersRouter);
 router.use('/movies', moviesRouter);
 
 router.get('/signout', signout);
-router.get('*', () => {
+router.use('*', () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 

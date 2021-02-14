@@ -10,12 +10,12 @@ import { errors } from 'celebrate';
 import router from './routes/index.js';
 import corsConfig from './configs/corsConfig.js';
 import { DEV_DATABASE_URL } from './configs/devEnvConfig.js';
-import rateLimitConfig from './configs/rateLimitConfig.js';
+import limiter from './middlewares/limiter.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 import centralErrorsHandler from './middlewares/centralErrorsHandler.js';
 
 dotenv.config();
-const { PORT = 3000, DATABASE_URL = DEV_DATABASE_URL } = process.env;
+const { DATABASE_URL = DEV_DATABASE_URL } = process.env;
 const app = express();
 
 mongoose.connect(DATABASE_URL, {
@@ -30,8 +30,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
-app.use(rateLimitConfig);
 app.use(requestLogger);
+app.use(limiter);
 app.use('*', cors(corsConfig));
 
 // routes
@@ -42,4 +42,4 @@ app.use(errorLogger);
 app.use(errors());
 app.use(centralErrorsHandler);
 
-app.listen(PORT);
+export default app;

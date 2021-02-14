@@ -5,6 +5,6 @@ import { getUser, updateUser } from '../controllers/users.js';
 const usersRouter = express.Router();
 
 usersRouter.get('/me', getUser);
-usersRouter.put('/me', updateUserValidator, updateUser);
+usersRouter.patch('/me', updateUserValidator, updateUser);
 
 export default usersRouter;

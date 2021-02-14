@@ -5,7 +5,7 @@ import escapeHtml from 'escape-html';
 import User from '../models/user.js';
 import NotFoundError from '../errors/NotFoundError.js';
 import ConflictError from '../errors/ConflictError.js';
-import { documentNotFoundErrorMessage, userExistErrorMessage } from '../utils/constants.js';
+import { documentNotFoundErrorMessage, userExistErrorMessage, signedOutMessage } from '../utils/constants.js';
 import { DEV_JWT_SECRET } from '../configs/devEnvConfig.js';
 
 const { JWT_SECRET = DEV_JWT_SECRET } = process.env;
@@ -50,7 +50,7 @@ const login = async (req, res, next) => {
 };
 
 const signout = (req, res) => (
-  res.clearCookie('jwt', { httpOnly: true, sameSite: true }).send({ message: 'Signed Out' })
+  res.clearCookie('jwt', { httpOnly: true, sameSite: true }).send({ message: signedOutMessage })
 );
 
 const getUser = async (req, res, next) => {

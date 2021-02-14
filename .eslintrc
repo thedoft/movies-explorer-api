@@ -1,8 +1,7 @@
 {
-  "extends": "airbnb-base",
+  "extends": ["airbnb-base", "plugin:jest/recommended"],
   "rules": {
-    "no-underscore-dangle": "off",
-    "no-unused-vars": "off"
+    "no-underscore-dangle": "off"
   },
   "overrides": [
     {

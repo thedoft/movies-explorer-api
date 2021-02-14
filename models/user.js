@@ -3,8 +3,7 @@ import bcrypt from 'bcryptjs';
 import validator from 'validator';
 
 import UnauthorizedError from '../errors/UnauthorizedError.js';
-import { incorrectAuthDataMessage, requiredValidationMessage, documentNotFoundErrorMessage } from '../utils/constants.js';
-import NotFoundError from '../errors/NotFoundError.js';
+import { incorrectAuthDataMessage, requiredValidationMessage } from '../utils/constants.js';
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -32,7 +31,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.statics.findUserByCredentials = async function f(email, password) {
-  const user = await this.findOne({ email }).select('+password').orFail(new NotFoundError(documentNotFoundErrorMessage));
+  const user = await this.findOne({ email }).select('+password').orFail(new UnauthorizedError(incorrectAuthDataMessage));
 
   if (!user) {
     throw new UnauthorizedError(incorrectAuthDataMessage);

@@ -5,7 +5,8 @@ const centralErrorsHandler = (err, req, res, next) => {
     return res.status(statusCode).send({ message });
   }
 
-  return res.status(500).send({ message: 'На сервере произошла ошибка' });
+  res.status(500).send({ message: 'На сервере произошла ошибка' });
+  return next();
 };
 
 export default centralErrorsHandler;
