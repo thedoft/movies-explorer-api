@@ -1,7 +1,7 @@
 const corsConfig = {
   origin: [
-    'https://movieexplorer.students.nomoredomains.rocks',
-    'http://movieexplorer.students.nomoredomains.rocks',
+    'https://movies-explorer.students.nomoredomains.rocks',
+    'http://movies-explorer.students.nomoredomains.rocks',
     'http://localhost:3001',
   ],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
