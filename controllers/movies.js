@@ -46,14 +46,14 @@ const deleteMovie = async (req, res, next) => {
 
   try {
     const movie = await Movie
-      .findById(movieId)
+      .findOne({ movieId })
       .select('+owner')
       .orFail(new NotFoundError(documentNotFoundErrorMessage));
 
     if (movie.owner.toString() !== req.user._id.toString()) {
       throw new ForbiddenError(forbiddenErrorMessage);
     }
-    await Movie.deleteOne({ _id: movieId });
+    await Movie.deleteOne({ movieId });
 
     return res.send(movie);
   } catch (err) {
