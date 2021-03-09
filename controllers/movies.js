@@ -5,7 +5,11 @@ import { documentNotFoundErrorMessage, forbiddenErrorMessage } from '../utils/co
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({}).orFail(new NotFoundError(documentNotFoundErrorMessage));
+    const movies = await Movie.find({});
+
+    if (!movies) {
+      return res.send([]);
+    }
 
     return res.send(movies);
   } catch (err) {
@@ -47,7 +51,6 @@ const deleteMovie = async (req, res, next) => {
   try {
     const movie = await Movie
       .findOne({ movieId })
-      .select('+owner')
       .orFail(new NotFoundError(documentNotFoundErrorMessage));
 
     if (movie.owner.toString() !== req.user._id.toString()) {
