@@ -5,7 +5,7 @@ import { documentNotFoundErrorMessage, forbiddenErrorMessage } from '../utils/co
 
 const getMovies = async (req, res, next) => {
   try {
-    const movies = await Movie.find({});
+    const movies = await Movie.find({ owner: req.user._id });
 
     if (!movies) {
       return res.send([]);
