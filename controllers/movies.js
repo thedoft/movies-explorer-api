@@ -50,7 +50,7 @@ const deleteMovie = async (req, res, next) => {
 
   try {
     const movie = await Movie
-      .findOne({ movieId })
+      .findOne({ owner: req.user._id, movieId })
       .orFail(new NotFoundError(documentNotFoundErrorMessage));
 
     if (movie.owner.toString() !== req.user._id.toString()) {
