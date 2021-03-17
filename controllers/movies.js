@@ -56,7 +56,7 @@ const deleteMovie = async (req, res, next) => {
     if (movie.owner.toString() !== req.user._id.toString()) {
       throw new ForbiddenError(forbiddenErrorMessage);
     }
-    await Movie.deleteOne({ movieId });
+    await Movie.deleteOne({ owner: req.user._id, movieId });
 
     return res.send(movie);
   } catch (err) {
